@@ -16,16 +16,14 @@ root = r'X:\Timesheets.Sandox'
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s-%(levelname)s-%(message)s')
 logging.debug('Start of program')
 
-
-cal = TSCalendar(2015)
-
-
 files = processTree.getFiles(root)
 
 team   = FAETeam()
 tsdata = TSData()
 for file in files:
   tsfile = TSFile(file)
+  if (tsfile.fullname in team.members):
+    tsfile.AddFAE(team.members[tsfile.fullname])
   if (not tsfile.IsValid()):
     logging.error('Invalid File ' + file)
   else:
@@ -35,7 +33,9 @@ for file in files:
 tsdata.Log()
 tsdata.Validate(team)
 
-summary
+summary = TSSummary()
+
+summary.Process(tsdata, team, 2016, 3)
 
 """
   for i in weeks:
