@@ -42,7 +42,7 @@ class FAETeam:
     self.members.append(fae)
 
 #-----------------------------------------------------------------------
-class TSFile:
+class FLFile:
   def __init__(self,filename):
     self.fae   = None
     self.valid = False
@@ -65,60 +65,29 @@ class TSFile:
     self.wsDate   = self.weDate - datetime.timedelta(days=6)
     self.valid    = True
 
-    #check day of week; should be mon and sun
-
-  #def __repr__(self):
-  #  return '{}: {} {}'.format(self.__class__.__name__,self.wsDate,self.fullname)
-
-  #def TSFileCompare(x,y):
-  #  if (self.fae.team < other.fae.team): return other
-  #  if (self.fae.team == other.fae.team):
-  #    if (self.fae.loc < other.fae.loc):return other
-  #  if (self.lname < other.lname): return other
-  #  if (self.lname == other.lname):
-  #    if (self.fname < other.fname): return other
-  #  return self
-
   def __lt__(self,other): 
-    #logging.debug(self.fae.team + ' ' + self.fae.loc + ' ' + self.fae.fullname + ' - ' + other.fae.team + ' ' + other.fae.loc + ' ' + other.fae.fullname)
     if (self.fae.team != other.fae.team):
       if (self.fae.team < other.fae.team):
-        #logging.debug(self.fae.team + ' is LT')
         return True
       else:
         return False
     elif (self.fae.loc != other.fae.loc):
       if (self.fae.loc < other.fae.loc):
-        #logging.debug(self.fae.loc + ' is LT')
         return True
       else:
         return False
     elif (self.fae.lname != other.fae.lname):
       if (self.fae.lname < other.fae.lname):
-        #logging.debug(self.fae.lname + ' is LT')
         return True
       else:
         return False
     elif (self.fae.fname != other.fae.fname):
       if (self.fae.fname < other.fae.fname):
-        #logging.debug(self.fae.fname + ' is LT')
         return True
       else:
         return False
     logging.error('SHOULD NOT BE HERE')
     return False
-    #if (self.fae.team  < other.fae.team):
-    #  logging.debug(self.fae.team + ' is LT') 
-    #  return True
-    #elif (self.fae.loc < other.fae.loc):
-    #  logging.debug(self.fae.loc + ' is LT')
-    #  return True
-    #elif (self.fae.lname < other.fae.lname):
-    #  logging.debug(self.fae.lname + ' is LT')
-    #  return True
-    #elif (self.fae.fname < other.fae.fname):
-    #  logging.debug(self.fae.fname + ' is LT') 
-    #  return True
   def __le__(self,other): 
     return True
   def __gt__(self,other): 
@@ -140,7 +109,7 @@ class TSFile:
     logging.debug(str(self.wsDate) + ' ' + self.fname + ' ' + self.lname)
 
 #-----------------------------------------------------------------------
-class TSData:
+class FLData:
   def __init__(self):
     self.weeks = {}
 
@@ -171,47 +140,35 @@ class TSData:
         logging.debug('Name' + '            ' + name)
 
 #-----------------------------------------------------------------------
-class Week:
-  def __init__(self):
-    self.date = None
-    self.tsinfo = []
+#class Week:
+#  def __init__(self):
+#    self.date = None
+#    self.tsinfo = []
 
 #-----------------------------------------------------------------------
-#class TSInfo:
-#  def __init__(self,fnameinfo):
-#    self.fname    = fnameinfo.fname
-#    self.lname    = fnameinfo.lname
-#    self.fullname = fnameinfo.fullname
-#    self.filename = fnameinfo.filename
-#    self.weDate   = fnameinfo.weDate
-#    self.wsDate   = fnameinfo.wsDate
-#    self.valid    = True
-#
-#  def Log(self):
-#    logging.debug(str(self.wsDate) + ' ' + self.fname + ' ' + self.lname)
+#class RegionReport:
+#  def __init__(self):
+#    self.week = {}
 
+# TS == TimeSheet
+# FN == FileName
+# SS == SpreadSheet
+# Summary ? DB == DashBoard ?
+# TSTemplate
 
 #-----------------------------------------------------------------------
-class RegionReport:
-  def __init__(self):
-    self.week = {}
-
-#-----------------------------------------------------------------------
-class TSCalendar:
+class Calendar:
   def __init__(self,year):
     self.week = {}
     d = datetime.date(year,1,1)
     while (True):
-      #logging.debug(d.weekday())
       if (d.weekday() == 0):
         break;
       else:
         d = d + datetime.timedelta(days=1)
-    #logging.debug(d)
     i = 1
     while(True):
       self.week[i] = d
-      #logging.debug(str(i) + ' ' + str(self.week[i]))
       d = d + datetime.timedelta(days = 7)
       if (d.year > year):
         break;
@@ -222,29 +179,89 @@ class TSCalendar:
     for i in range(1,cnt+1):
       logging.debug(str(i) + ' ' + str(self.week[i])) 
  
+#-----------------------------------------------------------------------
+class TSDate:
+  def __init__(self, date):
+    self.asStr = str(date)
+
+  def __str__(self): return self.asStr
+
+#-----------------------------------------------------------------------
+class TSCode:
+  def __init__(self, partA):
+    self.asStr = partA
+
+  def __str__(self): return self.asStr
+
+  def Parse(self): pass
+  def Clean (self): pass
+  def Log(self): pass
+
+#-----------------------------------------------------------------------
+class TSLocation:
+  def __init__(self,partB):
+    self.asStr = partB
+
+  def __str__(self): return self.asStr
+
+#-----------------------------------------------------------------------
+class TSActivity:
+  def __init__(self,partC):
+    self.asStr = partC
+
+  def __str__(self): return self.asStr
+
+#-----------------------------------------------------------------------
+class TSProduct:
+  def __init__(self,partD):
+    self.asStr = partD
+
+  def __str__(self): return self.asStr
+
+#-----------------------------------------------------------------------
+class TSHours:
+  def __init__(self,hours):
+    self.asStr = str(hours)
+    self.asNum = hours
+
+  def __str__(self): return self.asStr
+
+#-----------------------------------------------------------------------
+class TSWorkType:
+  def __init__(self,workType):
+    self.asStr = workType
+
+  def __str__(self): return self.asStr
+
+#-----------------------------------------------------------------------
+class TSNote:
+  def __init__(self,note):
+    self.asStr = note
+
+  def __str__(self): return self.asStr
 
 #-----------------------------------------------------------------------
 # Class Timesheet Entry
 #-----------------------------------------------------------------------
 class TSEntry:
-  def __init__(self,date,partA,partB,partC,partD,hours,ltd,notes):
-    self.date  = date
-    self.partA = partA
-    self.partB = partB
-    self.partC = partC
-    self.partD = partD
-    self.hours = hours
-    self.ltd   = ltd
-    self.notes = notes
+  def __init__(self,date,partA,partB,partC,partD,hours,workType,note):
+    self.date     = TSDate(date)
+    self.code     = TSCode(partA)
+    self.location = TSLocation(partB)
+    self.activity = TSActivity(partC)
+    self.product  = TSProduct(partD)
+    self.hours    = TSHours(hours)
+    self.workType = TSWorkType(workType)
+    self.note     = TSNote(note)
 
   def Log(self):
-    date  = self.date
-    partA = self.partA.ljust(50)
-    partB = self.partB.ljust(60)
-    partC = self.partC.ljust(45)
-    partD = self.partD.ljust(35)
+    date  = str(self.date)
+    partA = str(self.code).ljust(50)     # Customer/Code
+    partB = str(self.location).ljust(60) # Location
+    partC = str(self.activity).ljust(45) # Activity
+    partD = str(self.product).ljust(35)  # Product
     hours = str(self.hours).ljust(5)
-    ltd   = self.ltd.ljust(10)
+    ltd   = str(self.workType).ljust(10)
     logging.debug(str(date) + '|' + partA + '|' + partB + '|' + partC + '|' + partD + '|' + hours + '|' + ltd)
 
 #-----------------------------------------------------------------------
@@ -289,8 +306,6 @@ class Timesheet:
     blankFlg  = False
     curDate   = None
 
-    #syncCell = ws.cell(row=6,column=4)
-    #logging.debug(syncCell)
     if (ws.cell(row=6,column=4).value == 'Customer - Part A'): 
       wsCol = 3
     elif (ws.cell(row=6,column=5).value == 'Customer - Part A'):
@@ -326,7 +341,6 @@ class Timesheet:
         partD = ''
 
       hours = ws.cell(row=wsRow,column=wsCol+9).value
-      #logging.debug('hours ' + str(hours))
       if (hours == None):
         hours = ''
       else:
@@ -334,8 +348,6 @@ class Timesheet:
           hours = float(hours)
         except:
           hours = ''
-      #logging.debug('hours ' + str(hours))
-      #logging.debug('hours ' + str(hours))
 
       ltd = ws.cell(row=wsRow,column=wsCol+10).value
       if (ltd == None):
@@ -348,9 +360,6 @@ class Timesheet:
       # TODO: if blankFlg == False, then make sure everything else is blank
 
       if (not blankFlg):
-        #if (day == ''):
-        #  logging.error('Day is blank')
-        #logging.debug(curDay + '|' + partA + '|' + partB + '|' + partC + '|' + '|')
         self.entries.append(TSEntry(curDate,partA,partB,partC,partD,hours,ltd,notes))
 
       if (day.startswith('Sunday')):
@@ -366,18 +375,17 @@ class Timesheet:
       wsRow += 1
       blankFlg = False
 
-    #logging.debug('Done ReadFile')
-
+  #---------------------------------------------------------------------
   def Log(self):
     for i,entry in enumerate(self.entries):
       fullname = self.ssdata.fae.fullname.ljust(25)
-      date  = self.entries[i].date
-      partA = self.entries[i].partA.ljust(50)
-      partB = self.entries[i].partB.ljust(60)
-      partC = self.entries[i].partC.ljust(45)
-      partD = self.entries[i].partD.ljust(35)
+      date  = str(self.entries[i].date)
+      partA = str(self.entries[i].code).ljust(50)
+      partB = str(self.entries[i].location).ljust(60)
+      partC = str(self.entries[i].activity).ljust(45)
+      partD = str(self.entries[i].product).ljust(35)
       hours = str(self.entries[i].hours).ljust(5)
-      ltd   = self.entries[i].ltd.ljust(10)
+      ltd   = str(self.entries[i].worktype).ljust(10)
       logging.debug(fullname + '|' + str(date) + '|' + partA + '|' + partB + '|' + partC + '|' + partD + '|' + hours + '|' + ltd)
 
 #-----------------------------------------------------------------------
@@ -395,7 +403,7 @@ class TSSummary:
     self.year = year
     self.week = week
 
-    cal = TSCalendar(year)
+    cal = Calendar(year)
     self.Sort(tsdata,cal,week)
 
     for i,week in enumerate(self.sslist):
@@ -409,11 +417,6 @@ class TSSummary:
         self.tsdict[wsDate].append(ts)
       logging.debug('***' + str(wsDate) + '***')
 
-    #for i in range(0,self.week-1):
-    #  wsDate = cal.week[i+1]
-    #  for j,ts in enumerate(self.tsdict[wsDate]):
-    #    self.tsdict[wsDate][j].Log()
-
   #-----------------------------------------------------------------------
   def Sort(self,tsdata,cal,week):
     self.sslist = []
@@ -426,21 +429,12 @@ class TSSummary:
       for key,value in dict.items():
         list.append(value)
       self.sslist.append(sorted(list))
-      #list.sort(key=list.Compare)
-      #for j in list:
-      #  logging.debug(j.fae.team + ' ' + j.fae.loc + ' ' + j.fae.fullname)
  
     for i,week in enumerate(self.sslist):
       logging.debug(cal.week[i+1])
       for j,item in enumerate(week):
         logging.debug(item.fae.team + ' ' + item.fae.loc + ' ' + item.fae.fullname)
-    #for i in range(len(self.sslist)):
-    #  logging.debug(cal.week[k])
-    #  for j in range(len(self.sslist[i])):
-    #    logging.debug(j.fae.team + ' ' + j.fae.loc + ' ' + j.fae.fullname)
-    #  k += 1
         
-
     logging.debug('sorted list')
 
 

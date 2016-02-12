@@ -2,12 +2,12 @@ import os
 import re
 import logging
 import processTree
-from classes import TSFile
+from classes import FLFile
 #from classes import TSInfo
-from classes import TSData
+from classes import FLData
 from classes import FAETeam
 from classes import TSSummary
-from classes import TSCalendar
+from classes import Calendar
 #import parseTimesheet
 
 
@@ -19,23 +19,23 @@ logging.debug('Start of program')
 files = processTree.getFiles(root)
 
 team   = FAETeam()
-tsdata = TSData()
+flData = FLData()
 for file in files:
-  tsfile = TSFile(file)
-  if (tsfile.fullname in team.members):
-    tsfile.AddFAE(team.members[tsfile.fullname])
-  if (not tsfile.IsValid()):
+  flFile = FLFile(file)
+  if (flFile.fullname in team.members):
+    flFile.AddFAE(team.members[flFile.fullname])
+  if (not flFile.IsValid()):
     logging.error('Invalid File ' + file)
   else:
-    tsfile.Log()
-    tsdata.AddFile(tsfile)
+    flFile.Log()
+    flData.AddFile(flFile)
 
-tsdata.Log()
-tsdata.Validate(team)
+flData.Log()
+flData.Validate(team)
 
 summary = TSSummary()
 
-summary.Process(tsdata, team, 2016, 3)
+summary.Process(flData, team, 2016, 3)
 
 """
   for i in weeks:
