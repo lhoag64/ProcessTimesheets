@@ -26,13 +26,7 @@
     <Compile Include="Calendar.py" />
     <Compile Include="FAE.py" />
     <Compile Include="FileList.py" />
-    <Compile Include="processTree.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="processTimesheets.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="parseTimesheet.py" />
+    <Compile Include="ProcessTimesheets.py" />
     <Compile Include="Summary.py" />
     <Compile Include="TimeSheet.py" />
   </ItemGroup>

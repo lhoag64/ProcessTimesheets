@@ -1,8 +1,8 @@
 import os
 import re
 import logging
-import processTree
 from Calendar import Calendar
+from FileList import GetFiles
 from FileList import FLFile
 from FileList import FLData
 from FAE      import FAETeam
@@ -14,7 +14,7 @@ root = r'X:\Timesheets.Sandox'
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s-%(levelname)s-%(message)s')
 logging.debug('Start of program')
 
-files = processTree.getFiles(root)
+files = GetFiles(root)
 
 team   = FAETeam()
 flData = FLData()
