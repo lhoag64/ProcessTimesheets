@@ -1,3 +1,4 @@
+"""
 import os
 import os.path
 import logging
@@ -24,3 +25,4 @@ def walk(rootdir, list):
         walk(dir, list)
     break
 
+"""

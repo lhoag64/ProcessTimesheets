@@ -7,7 +7,6 @@ from FileList import FLFile
 from FileList import FLData
 from FAE      import FAETeam
 from Summary  import TSSummary
-#import parseTimesheet
 
 
 root = r'X:\Timesheets.Sandox'
@@ -36,25 +35,6 @@ summary = TSSummary()
 
 summary.Process(flData, team, 2016, 3)
 
-"""
-  for i in weeks:
-    if (i != tsinfo.wsDate):
-      #tsfileinfo[fnameinfo.wsDate] = []
-      weeks.append(fnameinfo.wsDate)
-      break;
-  #tsfileinfo[fnameinfo.wsDate].append(fnameinfo)
 
-weeks.sort()
-
-for i in range(0, len(weeks)):
-  logging.debug(weeks[i])
-  #tsfileinfo[weeks[i]].sort(key=lambda obj: obj.lname)
-  #for j in range(0, len(tsfileinfo[weeks[i]])):
-  #   tsfileinfo[weeks[i]][j].Log()
-
-#for j,k oin
-#  for j in range(0, len(i)):
-#    i[j].Log()
-"""
 
 logging.debug('Done')
