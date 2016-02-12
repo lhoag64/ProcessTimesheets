@@ -2,12 +2,11 @@ import os
 import re
 import logging
 import processTree
-from classes import FLFile
-#from classes import TSInfo
-from classes import FLData
-from classes import FAETeam
-from classes import TSSummary
-from classes import Calendar
+from Calendar import Calendar
+from FileList import FLFile
+from FileList import FLData
+from FAE      import FAETeam
+from Summary  import TSSummary
 #import parseTimesheet
 
 
