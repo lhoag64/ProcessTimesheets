@@ -28,6 +28,9 @@
     <Compile Include="FileList.py" />
     <Compile Include="ProcessTimesheets.py" />
     <Compile Include="Summary.py" />
+    <Compile Include="MasterTS.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TimeSheet.py" />
   </ItemGroup>
   <PropertyGroup>

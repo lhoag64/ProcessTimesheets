@@ -12,7 +12,33 @@ class TSDate:
   def __str__(self): return self.asStr
 
 #-----------------------------------------------------------------------
+# Class encapsulating Work Codes (or customers)
+#-----------------------------------------------------------------------
 class TSCode:
+
+  #---------------------------------------------------------------------
+  # Static Variable cDict which holds valid codes, initialized by Init
+  #---------------------------------------------------------------------
+  cDict = None
+
+  #---------------------------------------------------------------------
+  # Initialize cDict
+  #---------------------------------------------------------------------
+  def Init(list):
+    TSCode.cDict = {}
+    for i,code in enumerate(list):
+      tup = code.rpartition('-')
+      desc = tup[0].strip()
+      code = tup[2].strip()
+      logging.debug(code + '|' + desc + '|')
+      TSCode.cDict.update({code:desc})
+    logging.debug('************')
+    logging.debug('************')
+
+
+  #---------------------------------------------------------------------
+  # Initialize an instance of TSCode
+  #---------------------------------------------------------------------
   def __init__(self, partA):
     self.asStr = partA
 
@@ -24,6 +50,28 @@ class TSCode:
 
 #-----------------------------------------------------------------------
 class TSLocation:
+  #---------------------------------------------------------------------
+  # Static Variable lDict which holds valid locations, initialized by Init
+  #---------------------------------------------------------------------
+  lDict = None
+
+  #---------------------------------------------------------------------
+  # Initialize lDict
+  #---------------------------------------------------------------------
+  def Init(list):
+    TSLocation.lDict = {}
+    for i,loc in enumerate(list):
+      tup = loc.rpartition('-')
+      desc = tup[0].strip()
+      code = tup[2].strip()
+      logging.debug(code + '|' + desc + '|')
+      TSLocation.lDict.update({code:desc})
+    logging.debug('************')
+    logging.debug('************')
+
+  #---------------------------------------------------------------------
+  # Initialize an instance of TSLocation
+  #---------------------------------------------------------------------
   def __init__(self,partB):
     self.asStr = partB
 
@@ -31,6 +79,28 @@ class TSLocation:
 
 #-----------------------------------------------------------------------
 class TSActivity:
+  #---------------------------------------------------------------------
+  # Static Variable lDict which holds valid locations, initialized by Init
+  #---------------------------------------------------------------------
+  aDict = None
+
+  #---------------------------------------------------------------------
+  # Initialize lDict
+  #---------------------------------------------------------------------
+  def Init(list):
+    TSActivity.aDict = {}
+    for i,act in enumerate(list):
+      tup = act.rpartition('-')
+      desc = tup[0].strip()
+      code = tup[2].strip()
+      logging.debug(code + '|' + desc + '|')
+      TSActivity.aDict.update({code:desc})
+    logging.debug('************')
+    logging.debug('************')
+
+  #---------------------------------------------------------------------
+  # Initialize an instance of TSActivity
+  #---------------------------------------------------------------------
   def __init__(self,partC):
     self.asStr = partC
 
@@ -38,6 +108,28 @@ class TSActivity:
 
 #-----------------------------------------------------------------------
 class TSProduct:
+  #---------------------------------------------------------------------
+  # Static Variable lDict which holds valid locations, initialized by Init
+  #---------------------------------------------------------------------
+  pDict = None
+
+  #---------------------------------------------------------------------
+  # Initialize lDict
+  #---------------------------------------------------------------------
+  def Init(list):
+    TSProduct.pDict = {}
+    for i,prod in enumerate(list):
+      tup = prod.rpartition('-')
+      desc = tup[0].strip()
+      code = tup[2].strip()
+      logging.debug(code + '|' + desc + '|')
+      TSProduct.pDict.update({code:desc})
+    logging.debug('************')
+    logging.debug('************')
+
+  #---------------------------------------------------------------------
+  # Initialize an instance of TSProduct
+  #---------------------------------------------------------------------
   def __init__(self,partD):
     self.asStr = partD
 

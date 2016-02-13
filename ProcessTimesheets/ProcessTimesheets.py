@@ -1,6 +1,7 @@
 import os
 import re
 import logging
+from MasterTS import Master
 from Calendar import Calendar
 from FileList import GetFiles
 from FileList import FLFile
@@ -10,9 +11,13 @@ from Summary  import TSSummary
 
 
 root = r'X:\Timesheets.Sandox'
+year = 2016
 
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s-%(levelname)s-%(message)s')
 logging.debug('Start of program')
+
+Master.Init(root)
+Calendar.Init(year)
 
 files = GetFiles(root)
 

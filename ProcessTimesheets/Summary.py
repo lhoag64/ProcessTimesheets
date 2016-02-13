@@ -21,11 +21,11 @@ class TSSummary:
     self.year = year
     self.week = week
 
-    cal = Calendar(year)
-    self.Sort(tsdata,cal,week)
+    #cal = Calendar(year)
+    self.Sort(tsdata,week)
 
     for i,week in enumerate(self.sslist):
-      wsDate = cal.week[i+1]
+      wsDate = Calendar.week[i+1]
       logging.debug('***' + str(wsDate) + '***')
       self.tsdict[wsDate] = []
       for j,ssdata in enumerate(week):
@@ -36,12 +36,12 @@ class TSSummary:
       logging.debug('***' + str(wsDate) + '***')
 
   #-----------------------------------------------------------------------
-  def Sort(self,tsdata,cal,week):
+  def Sort(self,tsdata,week):
     self.sslist = []
     for i in range(1,week+1):
       list = []
       dict = {}
-      wsDate = cal.week[i]
+      wsDate = Calendar.week[i]
       logging.debug(str(i) + ' ' + str(wsDate))
       dict = tsdata.weeks[wsDate]
       for key,value in dict.items():
@@ -49,7 +49,7 @@ class TSSummary:
       self.sslist.append(sorted(list))
  
     for i,week in enumerate(self.sslist):
-      logging.debug(cal.week[i+1])
+      logging.debug(Calendar.week[i+1])
       for j,item in enumerate(week):
         logging.debug(item.fae.team + ' ' + item.fae.loc + ' ' + item.fae.fullname)
         

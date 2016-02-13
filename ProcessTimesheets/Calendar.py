@@ -4,8 +4,11 @@ import logging
 
 #-----------------------------------------------------------------------
 class Calendar:
-  def __init__(self,year):
-    self.week = {}
+
+  week = {}
+
+  def Init(year):
+    Calendar.week = {}
     d = datetime.date(year,1,1)
     while (True):
       if (d.weekday() == 0):
@@ -14,14 +17,15 @@ class Calendar:
         d = d + datetime.timedelta(days=1)
     i = 1
     while(True):
-      self.week[i] = d
+      Calendar.week[i] = d
       d = d + datetime.timedelta(days = 7)
       if (d.year > year):
         break;
       i += 1
+    #logging.debug('Done')
    
-  def Log(self):
-    cnt = len(self.week)
+  def Log():
+    cnt = len(Calendar.week)
     for i in range(1,cnt+1):
-      logging.debug(str(i) + ' ' + str(self.week[i])) 
+      logging.debug(str(i) + ' ' + str(week[i])) 
  
