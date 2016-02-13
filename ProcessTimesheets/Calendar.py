@@ -25,7 +25,8 @@ class Calendar:
     #logging.debug('Done')
    
   def Log():
-    cnt = len(Calendar.week)
-    for i in range(1,cnt+1):
-      logging.debug(str(i) + ' ' + str(week[i])) 
+    pass
+    #cnt = len(Calendar.week)
+    #for i in range(1,cnt+1):
+    #  logging.debug(str(i) + ' ' + str(week[i])) 
  

@@ -14,7 +14,7 @@ class Master:
     masterSS = None
     candidateList = []
     for file in os.listdir(root):
-      logging.debug(file)
+      #logging.debug(file)
       if file.endswith('xlsx'):
         if file.startswith('FAE Timesheet'):
           candidateList.append(file)
@@ -49,7 +49,7 @@ class Master:
         self.ext   = list[3].strip()
         self.ext   = self.ext[9:13]
         # should error check ver, date, ext)
-        logging.debug('|' + str(self.ver) +'|' + str(self.date) + '|')
+        #logging.debug('|' + str(self.ver) +'|' + str(self.date) + '|')
 
       def __lt__(self,other):
         if (self.ver < other.ver):
@@ -118,7 +118,7 @@ class Master:
           list = []
         list.append(code)
         endCnt = 0
-        logging.debug(code)
+        #logging.debug(code)
       else:
         if (found != False):
           endCnt += 1

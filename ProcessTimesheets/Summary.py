@@ -42,18 +42,18 @@ class TSSummary:
       list = []
       dict = {}
       wsDate = Calendar.week[i]
-      logging.debug(str(i) + ' ' + str(wsDate))
+      #logging.debug(str(i) + ' ' + str(wsDate))
       dict = tsdata.weeks[wsDate]
       for key,value in dict.items():
         list.append(value)
       self.sslist.append(sorted(list))
  
-    for i,week in enumerate(self.sslist):
-      logging.debug(Calendar.week[i+1])
-      for j,item in enumerate(week):
-        logging.debug(item.fae.team + ' ' + item.fae.loc + ' ' + item.fae.fullname)
+    #for i,week in enumerate(self.sslist):
+    #  logging.debug(Calendar.week[i+1])
+    #  for j,item in enumerate(week):
+    #    logging.debug(item.fae.team + ' ' + item.fae.loc + ' ' + item.fae.fullname)
         
-    logging.debug('sorted list')
+    #logging.debug('sorted list')
 
 
 

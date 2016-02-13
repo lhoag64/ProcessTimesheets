@@ -7,17 +7,14 @@ finished = []
 
 def GetFiles(root):
   list = []
-  #logging.debug(root)
   walk(root, list)
   return list
 
 def walk(rootdir, list):
   for curdir, subdirs, files in os.walk(rootdir):
-    #logging.debug(curdir)
     for file in files:
       if (file.startswith('Timesheet')):
         fname = os.path.join(rootdir,file)
-        #logging.debug(fname)
         list.append(fname)
     if (subdirs):
       for subdir in subdirs:
@@ -91,7 +88,8 @@ class FLFile:
     return (self.valid == True and self.fae != None)
 
   def Log(self):
-    logging.debug(str(self.wsDate) + ' ' + self.fname + ' ' + self.lname)
+    pass
+    #logging.debug(str(self.wsDate) + ' ' + self.fname + ' ' + self.lname)
 
 #-----------------------------------------------------------------------
 class FLData:
@@ -116,12 +114,13 @@ class FLData:
           logging.error('Missing Timesheet for ' + str(date) + ' ' + name)
         else:
           cnt += 1
-      logging.debug('Week ' + str(date) + ' Cnt ' + str(cnt))
+      #logging.debug('Week ' + str(date) + ' Cnt ' + str(cnt))
 
   def Log(self):
-    for week in self.weeks:
-      logging.debug('Week' + ' ' + str(week))
-      for name in self.weeks[week]:
-        logging.debug('Name' + '            ' + name)
+    pass
+    #for week in self.weeks:
+    #  logging.debug('Week' + ' ' + str(week))
+    #  for name in self.weeks[week]:
+    #    logging.debug('Name' + '            ' + name)
 
 

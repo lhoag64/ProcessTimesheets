@@ -12,6 +12,7 @@ from Summary  import TSSummary
 
 root = r'X:\Timesheets.Sandox'
 year = 2016
+week = 3
 
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s-%(levelname)s-%(message)s')
 logging.debug('Start of program')
@@ -38,7 +39,7 @@ flData.Validate(team)
 
 summary = TSSummary()
 
-summary.Process(flData, team, 2016, 3)
+summary.Process(flData, team, year, week)
 
 
 

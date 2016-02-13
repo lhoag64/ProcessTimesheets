@@ -26,23 +26,36 @@ class TSCode:
   #---------------------------------------------------------------------
   def Init(list):
     TSCode.cDict = {}
-    for i,code in enumerate(list):
-      tup = code.rpartition('-')
+    for i,item in enumerate(list):
+      tup = TSCode.Convert(item)
+      TSCode.cDict.update({tup[0]:tup[1]})
+
+  def Convert(text):
+      tup = text.rpartition('-')
       desc = tup[0].strip()
       code = tup[2].strip()
-      logging.debug(code + '|' + desc + '|')
-      TSCode.cDict.update({code:desc})
-    logging.debug('************')
-    logging.debug('************')
-
+      #logging.debug(code + '|' + desc + '|')
+      return (code,desc)
 
   #---------------------------------------------------------------------
   # Initialize an instance of TSCode
   #---------------------------------------------------------------------
   def __init__(self, partA):
-    self.asStr = partA
+    tup = TSCode.Convert(partA)
+    if (tup[0] not in TSCode.cDict):
+      raise Exception
+    self.asStr = str(tup[0])
+    if (len(self.asStr) == 3): 
+      self.isCompany  = True
+      self.isOverhead = False
+    else:
+      self.isOverhead = True
+      self.isCompany  = False
 
   def __str__(self): return self.asStr
+
+  def GetDesc(self):
+    return TSCode.cDict[self.asStr][0:5]
 
   def Parse(self): pass
   def Clean (self): pass
@@ -60,78 +73,102 @@ class TSLocation:
   #---------------------------------------------------------------------
   def Init(list):
     TSLocation.lDict = {}
-    for i,loc in enumerate(list):
-      tup = loc.rpartition('-')
+    for i,item in enumerate(list):
+      tup = TSLocation.Convert(item)
+      TSLocation.lDict.update({tup[0]:tup[1]})
+
+  def Convert(text):
+      tup = text.rpartition('-')
       desc = tup[0].strip()
       code = tup[2].strip()
-      logging.debug(code + '|' + desc + '|')
-      TSLocation.lDict.update({code:desc})
-    logging.debug('************')
-    logging.debug('************')
+      #logging.debug(code + '|' + desc + '|')
+      return (code,desc)
 
   #---------------------------------------------------------------------
   # Initialize an instance of TSLocation
   #---------------------------------------------------------------------
   def __init__(self,partB):
-    self.asStr = partB
+    if (len(partB) > 0):
+      tup = TSLocation.Convert(partB)
+      if (tup[0] not in TSLocation.lDict):
+        raise Exception
+      self.asStr = str(tup[0])
+    else:
+      self.asStr = ''
 
   def __str__(self): return self.asStr
 
 #-----------------------------------------------------------------------
 class TSActivity:
   #---------------------------------------------------------------------
-  # Static Variable lDict which holds valid locations, initialized by Init
+  # Static Variable aDict which holds valid locations, initialized by Init
   #---------------------------------------------------------------------
   aDict = None
 
   #---------------------------------------------------------------------
-  # Initialize lDict
+  # Initialize aDict
   #---------------------------------------------------------------------
   def Init(list):
     TSActivity.aDict = {}
-    for i,act in enumerate(list):
-      tup = act.rpartition('-')
+    for i,item in enumerate(list):
+      tup = TSActivity.Convert(item)
+      TSActivity.aDict.update({tup[0]:tup[1]})
+
+  def Convert(text):
+      tup = text.rpartition('-')
       desc = tup[0].strip()
       code = tup[2].strip()
-      logging.debug(code + '|' + desc + '|')
-      TSActivity.aDict.update({code:desc})
-    logging.debug('************')
-    logging.debug('************')
+      #logging.debug(code + '|' + desc + '|')
+      return (code,desc)
 
   #---------------------------------------------------------------------
   # Initialize an instance of TSActivity
   #---------------------------------------------------------------------
   def __init__(self,partC):
-    self.asStr = partC
+    if (len(partC) > 0):
+      tup = TSActivity.Convert(partC)
+      if (tup[0] not in TSActivity.aDict):
+        raise Exception
+      self.asStr = str(tup[0])
+    else:
+      self.asStr = ''
 
   def __str__(self): return self.asStr
 
 #-----------------------------------------------------------------------
 class TSProduct:
   #---------------------------------------------------------------------
-  # Static Variable lDict which holds valid locations, initialized by Init
+  # Static Variable pDict which holds valid locations, initialized by Init
   #---------------------------------------------------------------------
   pDict = None
 
   #---------------------------------------------------------------------
-  # Initialize lDict
+  # Initialize pDict
   #---------------------------------------------------------------------
   def Init(list):
     TSProduct.pDict = {}
-    for i,prod in enumerate(list):
-      tup = prod.rpartition('-')
+    for i,item in enumerate(list):
+      tup = TSProduct.Convert(item)
+      TSProduct.pDict.update({tup[0]:tup[1]})
+
+  def Convert(text):
+      tup = text.rpartition('-')
       desc = tup[0].strip()
       code = tup[2].strip()
-      logging.debug(code + '|' + desc + '|')
-      TSProduct.pDict.update({code:desc})
-    logging.debug('************')
-    logging.debug('************')
+      #logging.debug(code + '|' + desc + '|')
+      return (code,desc)
 
   #---------------------------------------------------------------------
   # Initialize an instance of TSProduct
   #---------------------------------------------------------------------
   def __init__(self,partD):
-    self.asStr = partD
+    if (len(partD) > 0):
+      tup = TSProduct.Convert(partD)
+      if (tup[0] not in TSProduct.pDict):
+        raise Exception
+      self.asStr = str(tup[0])
+    else:
+      self.asStr = ''
 
   def __str__(self): return self.asStr
 
@@ -173,10 +210,10 @@ class TSEntry:
 
   def Log(self):
     date  = str(self.date)
-    partA = str(self.code).ljust(50)     # Customer/Code
-    partB = str(self.location).ljust(60) # Location
-    partC = str(self.activity).ljust(45) # Activity
-    partD = str(self.product).ljust(35)  # Product
+    partA = str(self.code).ljust(5)
+    partB = str(self.location).ljust(3)  # Location
+    partC = str(self.activity).ljust(2)  # Activity
+    partD = str(self.product).ljust(2)   # Product
     hours = str(self.hours).ljust(5)
     ltd   = str(self.workType).ljust(10)
     logging.debug(str(date) + '|' + partA + '|' + partB + '|' + partC + '|' + partD + '|' + hours + '|' + ltd)
@@ -208,7 +245,7 @@ class Timesheet:
   #---------------------------------------------------------------------
   def ReadFile(self):
     path = self.ssdata.filename
-    logging.debug(path)
+    #logging.debug(path)
     wb = load_workbook(path)
     sheet_names = wb.get_sheet_names();
     if (sheet_names[0] != 'Timesheet'):
