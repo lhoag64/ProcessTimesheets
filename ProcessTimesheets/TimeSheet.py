@@ -233,7 +233,7 @@ class Timesheet:
     day = day[0:3]
     day = { 'mon':0,'tue':1,'wed':2,'thu':3,'fri':4,'sat':5,'sun':6 }.get(day,7)
     if (day == 7):
-      logging.error('Invalid Day')
+      raise Exception
     date = self.wsDate + datetime.timedelta(days = day)
     return date
 
@@ -245,11 +245,12 @@ class Timesheet:
   #---------------------------------------------------------------------
   def ReadFile(self):
     path = self.ssdata.filename
-    #logging.debug(path)
     wb = load_workbook(path)
     sheet_names = wb.get_sheet_names();
     if (sheet_names[0] != 'Timesheet'):
       logging.error(path + ' is not a valid Timesheet spreadsheet')
+
+    logging.debug('Reading ' + path)
 
     ws = wb.get_sheet_by_name('Timesheet')
 
