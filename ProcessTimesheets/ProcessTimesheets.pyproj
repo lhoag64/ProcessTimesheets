@@ -26,6 +26,9 @@
     <Compile Include="Calendar.py" />
     <Compile Include="FAE.py" />
     <Compile Include="FileList.py" />
+    <Compile Include="Metrics.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ProcessTimesheets.py" />
     <Compile Include="Summary.py" />
     <Compile Include="MasterTS.py">

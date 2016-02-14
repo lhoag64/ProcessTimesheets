@@ -22,6 +22,17 @@ def walk(rootdir, list):
         walk(dir, list)
     break
 
+#-----------------------------------------------------------------------
+class FLDate:
+  def __init__(self,date):
+    self.asStr = str(date)
+    self.asDate = date
+
+  def GetWSVal(self):
+    if (len(self.asStr) == 0):
+      return None
+    else:
+      return self.asStr
 
 #-----------------------------------------------------------------------
 class FLFile:
@@ -39,32 +50,35 @@ class FLFile:
     day   = int(filenameinfo[6][8:10])
     if (day < 1 or day > 31): return
 
+    weDate = datetime.date(year, month, day)
+    wsDate = weDate - datetime.timedelta(days=6)
+
     self.fname    = filenameinfo[2]
     self.lname    = filenameinfo[3]
     self.fullname = self.fname + ' ' + self.lname
     self.filename = filename
-    self.weDate   = datetime.date(year, month, day)
-    self.wsDate   = self.weDate - datetime.timedelta(days=6)
+    self.weDate   = FLDate(weDate)
+    self.wsDate   = FLDate(wsDate)
     self.valid    = True
 
   def __lt__(self,other): 
-    if (self.fae.team != other.fae.team):
-      if (self.fae.team < other.fae.team):
+    if (str(self.fae.team) != str(other.fae.team)):
+      if (str(self.fae.team) < str(other.fae.team)):
         return True
       else:
         return False
-    elif (self.fae.loc != other.fae.loc):
-      if (self.fae.loc < other.fae.loc):
+    elif (str(self.fae.loc) != str(other.fae.loc)):
+      if (str(self.fae.loc) < str(other.fae.loc)):
         return True
       else:
         return False
-    elif (self.fae.lname != other.fae.lname):
-      if (self.fae.lname < other.fae.lname):
+    elif (str(self.fae.lname) != str(other.fae.lname)):
+      if (str(self.fae.lname) < str(other.fae.lname)):
         return True
       else:
         return False
-    elif (self.fae.fname != other.fae.fname):
-      if (self.fae.fname < other.fae.fname):
+    elif (str(self.fae.fname) != str(other.fae.fname)):
+      if (str(self.fae.fname) < str(other.fae.fname)):
         return True
       else:
         return False
@@ -97,7 +111,7 @@ class FLData:
     self.weeks = {}
 
   def AddFile(self,tsfile):
-    date = tsfile.wsDate
+    date = tsfile.wsDate.asDate
     if (date not in self.weeks):
       self.weeks[date] = {}
     name = tsfile.fullname

@@ -9,6 +9,12 @@ class TSDate:
   def __init__(self, date):
     self.asStr = str(date)
 
+  def GetWSVal(self):
+    if (len(self.asStr) == 0):
+      return None
+    else:
+      return self.asStr
+
   def __str__(self): return self.asStr
 
 #-----------------------------------------------------------------------
@@ -34,7 +40,6 @@ class TSCode:
       tup = text.rpartition('-')
       desc = tup[0].strip()
       code = tup[2].strip()
-      #logging.debug(code + '|' + desc + '|')
       return (code,desc)
 
   #---------------------------------------------------------------------
@@ -51,6 +56,12 @@ class TSCode:
     else:
       self.isOverhead = True
       self.isCompany  = False
+
+  def GetWSVal(self):
+    if (len(self.asStr) == 0):
+      return None
+    else:
+      return self.asStr
 
   def __str__(self): return self.asStr
 
@@ -96,6 +107,12 @@ class TSLocation:
     else:
       self.asStr = ''
 
+  def GetWSVal(self):
+    if (len(self.asStr) == 0):
+      return None
+    else:
+      return int(self.asStr)
+
   def __str__(self): return self.asStr
 
 #-----------------------------------------------------------------------
@@ -132,6 +149,12 @@ class TSActivity:
       self.asStr = str(tup[0])
     else:
       self.asStr = ''
+
+  def GetWSVal(self):
+    if (len(self.asStr) == 0):
+      return None
+    else:
+      return int(self.asStr)
 
   def __str__(self): return self.asStr
 
@@ -170,20 +193,42 @@ class TSProduct:
     else:
       self.asStr = ''
 
+  def GetWSVal(self):
+    if (len(self.asStr) == 0):
+      return None
+    else:
+      return int(self.asStr)
+
   def __str__(self): return self.asStr
 
 #-----------------------------------------------------------------------
 class TSHours:
   def __init__(self,hours):
     self.asStr = str(hours)
-    self.asNum = hours
+    if (len(self.asStr) == 0):
+      self.asNum = 0.0
+    else:
+      self.asNum = hours
+
+  def GetWSVal(self):
+    if (len(self.asStr) == 0):
+      return None
+    else:
+      return self.asNum
 
   def __str__(self): return self.asStr
+  def __float__(self): return self.asNum
 
 #-----------------------------------------------------------------------
 class TSWorkType:
   def __init__(self,workType):
     self.asStr = workType
+
+  def GetWSVal(self):
+    if (len(self.asStr) == 0):
+      return None
+    else:
+      return self.asStr
 
   def __str__(self): return self.asStr
 
@@ -191,6 +236,12 @@ class TSWorkType:
 class TSNote:
   def __init__(self,note):
     self.asStr = note
+
+  def GetWSVal(self):
+    if (len(self.asStr) == 0):
+      return None
+    else:
+      return self.asNum
 
   def __str__(self): return self.asStr
 
@@ -222,7 +273,7 @@ class TSEntry:
 # Class Timesheet
 #-----------------------------------------------------------------------
 class Timesheet:
-  def __init__(self, ssdata, wsDate):
+  def __init__(self,ssdata,wsDate):
     self.entries = []
     self.ssdata  = ssdata
     self.wsDate  = wsDate

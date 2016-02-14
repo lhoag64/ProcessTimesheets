@@ -4,14 +4,46 @@ import logging
 #from openpyxl import load_workbook
 
 #-----------------------------------------------------------------------
+class FAEName:
+  def __init__(self,name):
+    self.asStr = name
+
+  def GetWSVal(self):
+    return self.asStr
+
+#-----------------------------------------------------------------------
+class FAELaborType:
+  def __init__(self,lType):
+    self.asStr = lType
+
+  def GetWSVal(self):
+    return self.asStr
+
+#-----------------------------------------------------------------------
+class FAETeamType:
+  def __init__(self,team):
+    self.asStr = team
+
+  def GetWSVal(self):
+    return self.asStr
+
+#-----------------------------------------------------------------------
+class FAELocation:
+  def __init__(self,loc):
+    self.asStr = loc
+
+  def GetWSVal(self):
+    return self.asStr
+
+#-----------------------------------------------------------------------
 class FAEMember:
   def __init__(self,fname,lname,laborType,team,loc):
-    self.fname     = fname
-    self.lname     = lname
-    self.fullname  = fname + ' ' + lname
-    self.laborType = laborType
-    self.team      = team
-    self.loc       = loc
+    self.fname     = FAEName(fname)
+    self.lname     = FAEName(lname)
+    self.fullname  = FAEName(fname + ' ' + lname)
+    self.laborType = FAELaborType(laborType)
+    self.team      = FAETeamType(team)
+    self.loc       = FAELocation(loc)
 
 #-----------------------------------------------------------------------
 class FAETeam:

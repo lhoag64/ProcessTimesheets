@@ -13,6 +13,8 @@ from Summary  import TSSummary
 root = r'X:\Timesheets.Sandox'
 year = 2016
 week = 3
+sumSheetName = r'AM Timesheet Summary Week 3.xlsx'
+sumSheetPath = os.path.join(root, sumSheetName);
 
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s-%(levelname)s-%(message)s')
 logging.debug('Start of program')
@@ -37,8 +39,7 @@ for file in files:
 flData.Log()
 flData.Validate(team)
 
-summary = TSSummary()
-
+summary = TSSummary(sumSheetPath)
 summary.Process(flData, team, year, week)
 
 
