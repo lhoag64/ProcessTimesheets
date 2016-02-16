@@ -5,10 +5,15 @@ import logging
 #-----------------------------------------------------------------------
 class Calendar:
 
-  week = {}
+  week    = {}
+  wsDates = None
+  weDates = None
 
   def Init(year):
     Calendar.week = {}
+    Calendar.wsDates = set()
+    Calendar.weDates = set()
+
     d = datetime.date(year,1,1)
     while (True):
       if (d.weekday() == 0):
@@ -18,6 +23,8 @@ class Calendar:
     i = 1
     while(True):
       Calendar.week[i] = d
+      Calendar.wsDates.add(d)
+      Calendar.weDates.add(d+datetime.timedelta(days=6))
       d = d + datetime.timedelta(days = 7)
       if (d.year > year):
         break;

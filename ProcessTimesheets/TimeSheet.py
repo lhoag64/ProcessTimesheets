@@ -2,7 +2,7 @@
 import datetime
 import logging
 from   openpyxl import load_workbook
-
+from   FAE      import FAETeam
  
 #-----------------------------------------------------------------------
 class TSDate:
@@ -53,9 +53,12 @@ class TSCode:
     if (len(self.asStr) == 3): 
       self.isCompany  = True
       self.isOverhead = False
-    else:
+    elif (len(self.asStr) == 5):
       self.isOverhead = True
       self.isCompany  = False
+    else:
+      self.isOverhead = None
+      self.isCompany  = None
 
   def GetWSVal(self):
     if (len(self.asStr) == 0):
@@ -63,14 +66,14 @@ class TSCode:
     else:
       return self.asStr
 
-  def __str__(self): return self.asStr
+  def __str__(self):
+    if (self.asStr != None): return self.asStr
+    else: return ''
+
+  def GetVal(self): return self.asStr
 
   def GetDesc(self):
     return TSCode.cDict[self.asStr][0:5]
-
-  def Parse(self): pass
-  def Clean (self): pass
-  def Log(self): pass
 
 #-----------------------------------------------------------------------
 class TSLocation:
@@ -92,7 +95,6 @@ class TSLocation:
       tup = text.rpartition('-')
       desc = tup[0].strip()
       code = tup[2].strip()
-      #logging.debug(code + '|' + desc + '|')
       return (code,desc)
 
   #---------------------------------------------------------------------
@@ -105,15 +107,21 @@ class TSLocation:
         raise Exception
       self.asStr = str(tup[0])
     else:
-      self.asStr = ''
+      self.asStr = None
 
   def GetWSVal(self):
-    if (len(self.asStr) == 0):
-      return None
-    else:
-      return int(self.asStr)
+    if (self.asStr != None):
+      if (len(self.asStr) == 0):
+        return None
+      else:
+        return int(self.asStr)
+    else: return None
 
-  def __str__(self): return self.asStr
+  def GetVal(self) : return self.asStr
+
+  def __str__(self):
+    if (self.asStr != None): return self.asStr
+    else: return ''
 
 #-----------------------------------------------------------------------
 class TSActivity:
@@ -148,15 +156,21 @@ class TSActivity:
         raise Exception
       self.asStr = str(tup[0])
     else:
-      self.asStr = ''
+      self.asStr = None
 
   def GetWSVal(self):
-    if (len(self.asStr) == 0):
-      return None
-    else:
-      return int(self.asStr)
+    if (self.asStr != None):
+      if (len(self.asStr) == 0):
+        return None
+      else:
+        return int(self.asStr)
+    else: return None
 
-  def __str__(self): return self.asStr
+  def GetVal(self) : return self.asStr
+
+  def __str__(self):
+    if (self.asStr != None): return self.asStr
+    else: return ''
 
 #-----------------------------------------------------------------------
 class TSProduct:
@@ -178,7 +192,6 @@ class TSProduct:
       tup = text.rpartition('-')
       desc = tup[0].strip()
       code = tup[2].strip()
-      #logging.debug(code + '|' + desc + '|')
       return (code,desc)
 
   #---------------------------------------------------------------------
@@ -191,15 +204,21 @@ class TSProduct:
         raise Exception
       self.asStr = str(tup[0])
     else:
-      self.asStr = ''
+      self.asStr = None
 
   def GetWSVal(self):
-    if (len(self.asStr) == 0):
-      return None
-    else:
-      return int(self.asStr)
+    if (self.asStr != None):
+      if (len(self.asStr) == 0):
+        return None
+      else:
+        return int(self.asStr)
+    else: return None
 
-  def __str__(self): return self.asStr
+  def GetVal(self) : return self.asStr
+
+  def __str__(self):
+    if (self.asStr != None): return self.asStr
+    else: return ''
 
 #-----------------------------------------------------------------------
 class TSHours:
@@ -216,34 +235,61 @@ class TSHours:
     else:
       return self.asNum
 
-  def __str__(self): return self.asStr
+  def GetVal(self) : return self.asNum
+
+  def __str__(self): 
+    if (self.asStr != None): return self.asStr
+    else: return ''
   def __float__(self): return self.asNum
 
 #-----------------------------------------------------------------------
 class TSWorkType:
+  wtSet = set(['Labour','Travel','Standby'])
+
   def __init__(self,workType):
-    self.asStr = workType
+    if (len(workType)):
+      if (workType in TSWorkType.wtSet):
+        self.asStr = workType
+      else:
+        self.asStr = None
+    else:
+      self.asStr = None
 
   def GetWSVal(self):
-    if (len(self.asStr) == 0):
-      return None
-    else:
-      return self.asStr
+    if (self.asStr != None):
+      if (len(self.asStr) == 0):
+        return None
+      else:
+        return self.asStr
+    else: return None
 
-  def __str__(self): return self.asStr
+  def GetVal(self) : return self.asStr
+
+  def __str__(self):
+    if (self.asStr != None): return self.asStr
+    else: return ''
 
 #-----------------------------------------------------------------------
 class TSNote:
   def __init__(self,note):
-    self.asStr = note
+    if (note != None):
+      note = str(note)
+      if (len(note) == 0):
+        self.asStr = ''
+      else:
+        self.asStr = note
+    else:
+      self.asStr = None
 
   def GetWSVal(self):
     if (len(self.asStr) == 0):
       return None
     else:
-      return self.asNum
+      return self.asStr[0:48]
 
-  def __str__(self): return self.asStr
+  def __str__(self):
+    if (self.asStr != None): return self.asStr
+    else: return ''
 
 #-----------------------------------------------------------------------
 # Class Timesheet Entry
@@ -267,7 +313,7 @@ class TSEntry:
     partD = str(self.product).ljust(2)   # Product
     hours = str(self.hours).ljust(5)
     ltd   = str(self.workType).ljust(10)
-    logging.debug(str(date) + '|' + partA + '|' + partB + '|' + partC + '|' + partD + '|' + hours + '|' + ltd)
+    #logging.debug(str(date) + '|' + partA + '|' + partB + '|' + partC + '|' + partD + '|' + hours + '|' + ltd)
 
 #-----------------------------------------------------------------------
 # Class Timesheet

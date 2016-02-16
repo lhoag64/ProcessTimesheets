@@ -2,6 +2,8 @@ import os
 import os.path
 import datetime
 import logging
+from   Calendar import Calendar
+from   FAE      import FAETeam
 
 finished = []
 
@@ -37,25 +39,40 @@ class FLDate:
 #-----------------------------------------------------------------------
 class FLFile:
   def __init__(self,filename):
-    self.fae   = None
-    self.valid = False
+    self.fae      = None
+    self.fname    = None
+    self.lname    = None
+    self.fullname = None
+    self.filename = None
+    self.weDate   = None
+    self.wsDate   = None
+    self.valid    = False
+
     filenameinfo = os.path.basename(filename).split();
     if (len(filenameinfo) != 7):
       return
 
     year  = int(filenameinfo[6][0:4])
-    if (year < 2016 or year > 2020): return
+    if (year < 2016 or year > 2020): 
+      return
     month = int(filenameinfo[6][5:7])
-    if (month < 1 or month > 12): return
+    if (month < 1 or month > 12): 
+      return
     day   = int(filenameinfo[6][8:10])
-    if (day < 1 or day > 31): return
+    if (day < 1 or day > 31): 
+      return
 
     weDate = datetime.date(year, month, day)
+    if (weDate not in Calendar.weDates):
+      return
     wsDate = weDate - datetime.timedelta(days=6)
 
     self.fname    = filenameinfo[2]
     self.lname    = filenameinfo[3]
     self.fullname = self.fname + ' ' + self.lname
+    if (self.fullname not in FAETeam.dict):
+      return
+
     self.filename = filename
     self.weDate   = FLDate(weDate)
     self.wsDate   = FLDate(wsDate)
@@ -120,12 +137,12 @@ class FLData:
     else:
       logging.error('Timesheet already exists for ' + str(date) + ' ' + name)
 
-  def Validate(self, faes):
+  def Validate(self):
     for date in self.weeks:
       cnt = 0
-      for name in faes.members:
+      for name in FAETeam.dict:
         if (name not in self.weeks[date]):
-          logging.error('Missing Timesheet for ' + str(date) + ' ' + name)
+          logging.error('Missing Timesheet for week starting ' + str(date) + ' ' + name)
         else:
           cnt += 1
       #logging.debug('Week ' + str(date) + ' Cnt ' + str(cnt))
