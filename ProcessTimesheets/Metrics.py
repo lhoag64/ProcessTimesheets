@@ -14,6 +14,11 @@ class Metrics:
   class Codes:
     def __init__(self):
       self.kam = Metrics.Codes.KAM()
+      self.rka = Metrics.Codes.RKAM()
+      self.car = Metrics.Codes.Carriers()
+      self.smc = Metrics.Codes.SmallCell()
+      self.mod = Metrics.Codes.MI()
+      self.sem = Metrics.Codes.Semi()
       self.oth = Metrics.Codes.Other()
       self.ovr = Metrics.Codes.Overhead()
     def Update(self,entry):
@@ -23,6 +28,12 @@ class Metrics:
         if (code != None):
           if (len(code) == 3):
             self.kam.Update(code,hours)
+            self.rka.Update(code,hours)
+            self.car.Update(code,hours)
+            self.smc.Update(code,hours)
+            self.mod.Update(code,hours)
+            self.sem.Update(code,hours)
+            self.oth.Update(code,hours)
             self.oth.Update(code,hours)
           elif (len(code) == 5):
             self.ovr.Update(code,hours)
@@ -40,7 +51,54 @@ class Metrics:
             elif (code == 'ALU'): self.alu += hours
             elif (code != 'OTH' and code != 'COB' and code != 'TTT'):
               self.oth += hours
-
+    #-------------------------------------------------------------------
+    class RKAM:
+      def __init__(self):
+        self.qcm = 0.0
+        self.att = 0.0
+        self.spr = 0.0
+      def Update(self,code,hours):
+            if   (code == 'QUA'): self.qcm += hours
+            elif (code == 'ATT'): self.att += hours
+            elif (code == 'SPR'): self.spr += hours
+    #-------------------------------------------------------------------
+    class Carriers:
+      def __init__(self):
+        self.att = 0.0
+        self.spr = 0.0
+        self.tmo = 0.0
+      def Update(self,code,hours):
+            if   (code == 'ATT'): self.att += hours
+            elif (code == 'SPR'): self.spr += hours
+            elif (code == 'TMO'): self.tmo += hours
+    #-------------------------------------------------------------------
+    class SmallCell:
+      def __init__(self):
+        self.qcm = 0.0
+        self.itl = 0.0
+        self.prw = 0.0
+        self.spd = 0.0
+      def Update(self,code,hours):
+            if   (code == 'QUA'): self.qcm += hours
+            elif (code == 'INT'): self.itl += hours
+            elif (code == 'PRW'): self.prw += hours
+            elif (code == 'SPD'): self.spd += hours
+    #-------------------------------------------------------------------
+    class MI:
+      def __init__(self):
+        self.qor = 0.0
+        self.ter = 0.0
+      def Update(self,code,hours):
+            if   (code == 'QOR'): self.qor += hours
+            elif (code == 'TER'): self.ter += hours
+    #-------------------------------------------------------------------
+    class Semi:
+      def __init__(self):
+        self.air = 0.0
+        self.van = 0.0
+      def Update(self,code,hours):
+            if   (code == 'AIR'): self.air += hours
+            elif (code == 'VAN'): self.van += hours
     #-------------------------------------------------------------------
     class Other:
       def __init__(self):
@@ -108,10 +166,12 @@ class Metrics:
       if (hours != None):
         if (name not in self.dict):
           self.dict[name] = Metrics.FAE.Fae()
-          sDate = FAETeam.dict[name].startDate
-          eDate = FAETeam.dict[name].endDate
+          # sDate = FAETeam.dict[name].startDate.asDate()
+          # eDate = FAETeam.dict[name].endDate.asDate()
+          # wsDate = entry.date
           # TODO: check entry date to see if it is in the week braketed by sDate and eDate
-          self.headcount += 1
+          # Don't do this here, calculate headcount someplace else
+          # self.headcount += 1
       metrics = self.dict[name]
       metrics.hours += hours
       #logging.debug(fae.fullname.GetVal())

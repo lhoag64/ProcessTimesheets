@@ -1,5 +1,5 @@
 #import os
-#import datetime
+import datetime
 import logging
 from   Calendar  import Calendar
 from   TimeSheet import Timesheet
@@ -14,7 +14,58 @@ from   Metrics import Metrics
 #-----------------------------------------------------------------------
 # Class TSSummary
 #-----------------------------------------------------------------------
+
 class TSSummary:
+
+  colName = \
+    [
+      'METRICS',
+      '  Code Based',
+      '    Key Accounts',
+      '      Ericsson',
+      '      Nokia',
+      '      ALU',
+      '      All Others',
+      '    Regional Key Accounts',
+      '      Qualcomm',
+      '      AT&T',
+      '      Sprint',
+      '    Carriers',
+      '      AT&T',
+      '      Sprint',
+      '      T-Mobile',
+      '    Small Cell',
+      '      Qualcomm',
+      '      Intel',
+      '      Parallel',
+      '      SpiderCloud',
+      '    Modular Instruments',
+      '      Qor',
+      '      Ter',
+      '    Semiconductor',
+      '      Air',
+      '      Van',
+      '    Others',
+      '      OTH',
+      '      COB',
+      '      TTT',
+      '    Overhead',
+      '      X4x',
+      '      X1x',
+      '  Team Based',
+      '    DMR',
+      '    MI',
+      '  Total Hours',
+      '    All',
+      '    Permenent',
+      '    Contract',
+      '    Labour',
+      '    Travel',
+      '    Standby',
+      '  FAEs'
+    ]
+
+
   def __init__(self,fname):
     self.filename = fname
     self.sslist  = []         # list of spreadsheets by week
@@ -50,6 +101,7 @@ class TSSummary:
     self.swb.create_sheet('AM Tables')
     self.swb.create_sheet('AM Metrics')
     self.swb.create_sheet('AM Data')
+    self.swb.remove_sheet(self.swb.get_sheet_by_name('Sheet'))
 
   #---------------------------------------------------------------------
   def saveWorkbook(self):
@@ -61,26 +113,31 @@ class TSSummary:
       align = Alignment(horizontal='center',vertical='center')
     elif (align == 'L'):
       align = Alignment(horizontal='left',vertical='center')
+    elif (align == 'R'):
+      align = Alignment(horizontal='right',vertical='center')
     else:
       align = Alignment(horizontal='right',vertical='center')
 
-    fmt = None
-    if (fmt == 'F'):
-      fmt = '0.00'
 
     side   = Side(style='thin')
     border = Border(left=side,right=side,top=side,bottom=side)
-    style  = Style(border=border,alignment=align,number_format=fmt)
+    #style  = Style(border=border,alignment=align,number_format=fmt)
+    #cell.style = style
 
-    cell.style = style
+    if (fmt == 'F'):
+      fmt = '0.00'
+      cell.number_format = fmt
+    cell.alignment     = align.copy()
+    cell.border        = border.copy()
     cell.value = value
 
   #---------------------------------------------------------------------
   def flagCell(self,cell):
     side   = Side(style='medium',color=RED)
     border = Border(left=side,right=side,top=side,bottom=side)
-    style  = Style(border=border)
-    cell.style = style
+    #style  = Style(border=border)
+    #cell.style = style
+    cell.border = border.copy()
 
   #---------------------------------------------------------------------
   def writeRawDataSheet(self):
@@ -96,7 +153,7 @@ class TSSummary:
     ws.column_dimensions['I'].width =  5
     ws.column_dimensions['J'].width =  5
     ws.column_dimensions['K'].width =  5
-    ws.column_dimensions['L'].width =  5
+    ws.column_dimensions['L'].width =  8
     ws.column_dimensions['M'].width = 10
     ws.column_dimensions['N'].width = 80
 
@@ -163,6 +220,12 @@ class TSSummary:
           if (entry.workType.GetVal() == None):
             self.flagCell(ws.cell(row=wsRow,column=wsCol+11))
 
+          # TODO: if hours == 0 or hours > 12 FLAG
+          # TODO: Blue Strips
+          # TODO: Check Cust vs Loc
+          # TODO: Add Local/Remote
+          # TODO: Add Local Text (AM-NE, AM-BA, etc)
+
           metrics.Update(fae,entry)
 
           # end of entry
@@ -186,63 +249,55 @@ class TSSummary:
 
     ws = self.swb.get_sheet_by_name('AM Metrics')
 
-    ws.column_dimensions['B'].width = 20
+    ws.column_dimensions['B'].width = 30
     ws.column_dimensions['C'].width = 10
 
-    self.setCell(ws.cell(row= 2,column=wsCol+0),'L','G','METRICS')
-    self.setCell(ws.cell(row= 3,column=wsCol+0),'L','G','  Code Based')
-    self.setCell(ws.cell(row= 4,column=wsCol+0),'L','G','    Key Accounts')
-    self.setCell(ws.cell(row= 5,column=wsCol+0),'L','G','      ERC')
-    self.setCell(ws.cell(row= 6,column=wsCol+0),'L','G','      NOK')
-    self.setCell(ws.cell(row= 7,column=wsCol+0),'L','G','      ALU')
-    self.setCell(ws.cell(row= 8,column=wsCol+0),'L','G','      Other')
-    self.setCell(ws.cell(row= 9,column=wsCol+0),'L','G','    Others')
-    self.setCell(ws.cell(row=10,column=wsCol+0),'L','G','      OTH')
-    self.setCell(ws.cell(row=11,column=wsCol+0),'L','G','      COB')
-    self.setCell(ws.cell(row=12,column=wsCol+0),'L','G','      TTT')
-    self.setCell(ws.cell(row=13,column=wsCol+0),'L','G','    Overhead')
-    self.setCell(ws.cell(row=14,column=wsCol+0),'L','G','      X4x')
-    self.setCell(ws.cell(row=15,column=wsCol+0),'L','G','      X1x')
-    self.setCell(ws.cell(row=16,column=wsCol+0),'L','G','  Team Based')
-    self.setCell(ws.cell(row=17,column=wsCol+0),'L','G','    DMR')
-    self.setCell(ws.cell(row=18,column=wsCol+0),'L','G','    MI')
-    self.setCell(ws.cell(row=19,column=wsCol+0),'L','G','  Total Hours')
-    self.setCell(ws.cell(row=20,column=wsCol+0),'L','G','    All')
-    self.setCell(ws.cell(row=21,column=wsCol+0),'L','G','    Permenent')
-    self.setCell(ws.cell(row=22,column=wsCol+0),'L','G','    Contract')
-    self.setCell(ws.cell(row=23,column=wsCol+0),'L','G','    Labour')
-    self.setCell(ws.cell(row=24,column=wsCol+0),'L','G','    Travel')
-    self.setCell(ws.cell(row=25,column=wsCol+0),'L','G','    Standby')
-    self.setCell(ws.cell(row=26,column=wsCol+0),'L','G','  FAEs')
-    rowoffs = 0
+    i = 1
+    while (i < len(TSSummary.colName)):
+      self.setCell(ws.cell(row=i+3,column=wsCol+0),'L','G',TSSummary.colName[i])
+      i += 1
+
     for fae in FAETeam.list:
       name = fae.fullname.GetVal()
-      self.setCell(ws.cell(row=27+rowoffs,column=wsCol+0),'L','G','    ' + name)
-      rowoffs += 1
-
+      self.setCell(ws.cell(row=i+3,column=wsCol+0),'L','G','    ' + name)
+      i += 1
 
     for i in range(1,self.week+1):
       wsDate = Calendar.week[i]
       metrics = self.metrics[wsDate]
-      self.setCell(ws.cell(row= 3,column=wsCol+0+i),'C','G',str(wsDate))
-      self.setCell(ws.cell(row= 4,column=wsCol+0+i),'C','G',str(i))
-      self.setCell(ws.cell(row= 5,column=wsCol+0+i),'L','G',metrics.codes.kam.erc)
-      self.setCell(ws.cell(row= 6,column=wsCol+0+i),'L','G',metrics.codes.kam.nok)
-      self.setCell(ws.cell(row= 7,column=wsCol+0+i),'L','G',metrics.codes.kam.alu)
-      self.setCell(ws.cell(row= 8,column=wsCol+0+i),'L','G',metrics.codes.kam.oth)
-      self.setCell(ws.cell(row=10,column=wsCol+0+i),'L','G',metrics.codes.oth.oth)
-      self.setCell(ws.cell(row=11,column=wsCol+0+i),'L','G',metrics.codes.oth.cob)
-      self.setCell(ws.cell(row=12,column=wsCol+0+i),'L','G',metrics.codes.oth.ttt)
-      self.setCell(ws.cell(row=14,column=wsCol+0+i),'L','G',metrics.codes.ovr.x4x)
-      self.setCell(ws.cell(row=15,column=wsCol+0+i),'L','G',metrics.codes.ovr.x1x)
-      self.setCell(ws.cell(row=17,column=wsCol+0+i),'L','G',metrics.team.dmr)
-      self.setCell(ws.cell(row=18,column=wsCol+0+i),'L','G',metrics.team.mi)
-      self.setCell(ws.cell(row=20,column=wsCol+0+i),'L','G',metrics.total.tot)
-      self.setCell(ws.cell(row=21,column=wsCol+0+i),'L','G',metrics.total.prm)
-      self.setCell(ws.cell(row=22,column=wsCol+0+i),'L','G',metrics.total.con)
-      self.setCell(ws.cell(row=23,column=wsCol+0+i),'L','G',metrics.total.lbr)
-      self.setCell(ws.cell(row=24,column=wsCol+0+i),'L','G',metrics.total.trv)
-      self.setCell(ws.cell(row=25,column=wsCol+0+i),'L','G',metrics.total.sby)
+      self.setCell(ws.cell(row= 2,column=wsCol+0+i),'C','G',str(wsDate))
+      self.setCell(ws.cell(row= 3,column=wsCol+0+i),'C','G',str(i))
+      self.setCell(ws.cell(row= 6,column=wsCol+0+i),'R','F',metrics.codes.kam.erc)
+      self.setCell(ws.cell(row= 7,column=wsCol+0+i),'R','F',metrics.codes.kam.nok)
+      self.setCell(ws.cell(row= 8,column=wsCol+0+i),'R','F',metrics.codes.kam.alu)
+      self.setCell(ws.cell(row= 9,column=wsCol+0+i),'R','F',metrics.codes.kam.oth)
+      self.setCell(ws.cell(row=11,column=wsCol+0+i),'R','F',metrics.codes.rka.qcm)
+      self.setCell(ws.cell(row=12,column=wsCol+0+i),'R','F',metrics.codes.rka.att)
+      self.setCell(ws.cell(row=13,column=wsCol+0+i),'R','F',metrics.codes.rka.spr)
+      self.setCell(ws.cell(row=15,column=wsCol+0+i),'R','F',metrics.codes.car.att)
+      self.setCell(ws.cell(row=16,column=wsCol+0+i),'R','F',metrics.codes.car.spr)
+      self.setCell(ws.cell(row=17,column=wsCol+0+i),'R','F',metrics.codes.car.tmo)
+      self.setCell(ws.cell(row=19,column=wsCol+0+i),'R','F',metrics.codes.smc.qcm)
+      self.setCell(ws.cell(row=20,column=wsCol+0+i),'R','F',metrics.codes.smc.itl)
+      self.setCell(ws.cell(row=21,column=wsCol+0+i),'R','F',metrics.codes.smc.prw)
+      self.setCell(ws.cell(row=22,column=wsCol+0+i),'R','F',metrics.codes.smc.spd)
+      self.setCell(ws.cell(row=24,column=wsCol+0+i),'R','F',metrics.codes.mod.qor)
+      self.setCell(ws.cell(row=25,column=wsCol+0+i),'R','F',metrics.codes.mod.ter)
+      self.setCell(ws.cell(row=27,column=wsCol+0+i),'R','F',metrics.codes.sem.air)
+      self.setCell(ws.cell(row=28,column=wsCol+0+i),'R','F',metrics.codes.sem.van)
+      self.setCell(ws.cell(row=30,column=wsCol+0+i),'R','F',metrics.codes.oth.oth)
+      self.setCell(ws.cell(row=31,column=wsCol+0+i),'R','F',metrics.codes.oth.cob)
+      self.setCell(ws.cell(row=32,column=wsCol+0+i),'R','F',metrics.codes.oth.ttt)
+      self.setCell(ws.cell(row=34,column=wsCol+0+i),'R','F',metrics.codes.ovr.x4x)
+      self.setCell(ws.cell(row=35,column=wsCol+0+i),'R','F',metrics.codes.ovr.x1x)
+      self.setCell(ws.cell(row=37,column=wsCol+0+i),'R','F',metrics.team.dmr)
+      self.setCell(ws.cell(row=38,column=wsCol+0+i),'R','F',metrics.team.mi)
+      self.setCell(ws.cell(row=40,column=wsCol+0+i),'R','F',metrics.total.tot)
+      self.setCell(ws.cell(row=41,column=wsCol+0+i),'R','F',metrics.total.prm)
+      self.setCell(ws.cell(row=42,column=wsCol+0+i),'R','F',metrics.total.con)
+      self.setCell(ws.cell(row=43,column=wsCol+0+i),'R','F',metrics.total.lbr)
+      self.setCell(ws.cell(row=44,column=wsCol+0+i),'R','F',metrics.total.trv)
+      self.setCell(ws.cell(row=45,column=wsCol+0+i),'R','F',metrics.total.sby)
       rowoffs = 0
       for fae in FAETeam.list:
         name = fae.fullname.GetVal()
@@ -250,9 +305,13 @@ class TSSummary:
           hours = metrics.fae.dict[name].hours
         else:
           hours = None
-        self.setCell(ws.cell(row=27+rowoffs,column=wsCol+0+i),'L','F',hours)
+        self.setCell(ws.cell(row=47+rowoffs,column=wsCol+0+i),'R','F',hours)
         if (hours == None):
-          self.flagCell(ws.cell(row=27+rowoffs,column=wsCol+0+i))
+          weDate = wsDate + datetime.timedelta(days=4) 
+          sDate = FAETeam.dict[name].startDate.GetVal()
+          tDate = FAETeam.dict[name].endDate.GetVal()
+          if (wsDate >= sDate and weDate <= tDate):
+            self.flagCell(ws.cell(row=27+rowoffs,column=wsCol+0+i))
 
         rowoffs += 1
 
@@ -315,7 +374,6 @@ class TSSummary:
     #    logging.debug(item.fae.team + ' ' + item.fae.loc + ' ' + item.fae.fullname)
         
     #logging.debug('sorted list')
-
 
 
 

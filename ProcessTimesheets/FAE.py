@@ -1,5 +1,5 @@
 #import os
-#import datetime
+import datetime
 import logging
 #from openpyxl import load_workbook
 
@@ -14,11 +14,16 @@ class FAEName:
 
 #-----------------------------------------------------------------------
 class FAEDate:
-  def __init__(self,name):
-    self.asStr = name
+  def __init__(self,date):
+    self.asStr = date
+    year = int(date[0:4])
+    mon  = int(date[5:7])
+    day  = int(date[8:10])
+    self.asDate = datetime.date(year,mon,day)
 
   def GetWSVal(self): return self.asStr
-  def GetVal(self): return self.asStr
+  def GetStr(self): return self.asDate
+  def GetVal(self): return self.asDate
   def __str__(self): return self.asStr
 
 #-----------------------------------------------------------------------

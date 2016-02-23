@@ -71,6 +71,7 @@ class FLFile:
     self.lname    = filenameinfo[3]
     self.fullname = self.fname + ' ' + self.lname
     if (self.fullname not in FAETeam.dict):
+      logging.debug(self.fullname)
       return
 
     self.filename = filename
@@ -128,8 +129,8 @@ class FLData:
     self.weeks = {}
 
   def AddFile(self,tsfile):
-    date = tsfile.wsDate.asDate
-    if (date not in self.weeks):
+    date = tsfile.wsDate.asDate 
+    if (date not in self.weeks): 
       self.weeks[date] = {}
     name = tsfile.fullname
     if (name not in self.weeks[date]):
@@ -142,7 +143,13 @@ class FLData:
       cnt = 0
       for name in FAETeam.dict:
         if (name not in self.weeks[date]):
-          logging.error('Missing Timesheet for week starting ' + str(date) + ' ' + name)
+          # Date is a Monday, so weDate should be a Friday
+          wsDate = date
+          weDate = date + datetime.timedelta(days=4)
+          sDate = FAETeam.dict[name].startDate.GetVal()
+          tDate = FAETeam.dict[name].endDate.GetVal()
+          if (wsDate >= sDate and weDate <= tDate):
+            logging.error('Missing Timesheet for week starting ' + str(date) + ' ' + name)
         else:
           cnt += 1
       #logging.debug('Week ' + str(date) + ' Cnt ' + str(cnt))
