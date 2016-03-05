@@ -10,10 +10,10 @@ from FAE      import FAETeam
 from Summary  import TSSummary
 
 
-root = r'X:\Reporting\Timesheets.Sandox'
+root = r'X:\Reporting\GC-TimeSheet'
 year = 2016
 week = 7
-sumSheetName = r'AM Timesheet Summary Week 7.xlsx'
+sumSheetName = 'GC Timesheet Summary Week ' + str(week) + '.xlsx'
 sumSheetPath = os.path.join(root, sumSheetName);
 
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s-%(levelname)s-%(message)s')
