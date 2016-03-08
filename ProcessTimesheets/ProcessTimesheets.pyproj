@@ -25,6 +25,7 @@
   <ItemGroup>
     <Compile Include="Calendar.py" />
     <Compile Include="FAE.py" />
+    <Compile Include="FAETeam.py" />
     <Compile Include="FileList.py" />
     <Compile Include="Metrics.py">
       <SubType>Code</SubType>

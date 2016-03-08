@@ -2,7 +2,6 @@
 import datetime
 import logging
 from   openpyxl import load_workbook
-from   FAE      import FAETeam
  
 #-----------------------------------------------------------------------
 class TSDate:
@@ -347,7 +346,7 @@ class Timesheet:
     if (sheet_names[0] != 'Timesheet'):
       logging.error(path + ' is not a valid Timesheet spreadsheet')
 
-    logging.debug('Reading ' + path)
+    #logging.debug('Reading ' + path)
 
     ws = wb.get_sheet_by_name('Timesheet')
 
@@ -365,6 +364,46 @@ class Timesheet:
     else:
       logging.error('Couldn\'t sync to Timesheet spreadsheet')
       return
+
+    # Try to find name
+    found = False
+    currow = 3
+    curcol = 1
+    while (curcol < 10):
+      cellValue = str(ws.cell(row=currow,column=curcol).value)
+      cellValue = cellValue.strip()
+      if (cellValue == 'Name:'):
+        found = True
+        break
+      curcol += 1
+    if (found == True):
+      nameFromFile = str(ws.cell(row=currow,column=curcol+2).value).strip()
+      if (nameFromFile[0:4] == 'Week'):
+        nameFromFile = str(ws.cell(row=currow,column=curcol+1).value).strip()
+    else:
+      nameFromFile = ''
+
+    # Try to find date
+    found = False
+    currow = 3
+    curcol = 1
+    while (curcol < 10):
+      cellValue = str(ws.cell(row=currow,column=curcol).value)
+      cellValue = cellValue.strip()
+      if (cellValue[0:4] == 'Week'):
+        found = True
+        break
+      curcol += 1
+    if (found == True):
+      dateFromFile = str(ws.cell(row=currow,column=curcol+1).value).strip()
+      dateFromFile = dateFromFile[0:10]
+    else:
+      dateFromFile = ''
+
+    nameFromFile = nameFromFile.ljust(18)
+    dateFromFile = dateFromFile.ljust(15)
+
+    logging.debug(nameFromFile + '|' + dateFromFile + '|Reading ' + path)
 
     while True:
       day = ws.cell(row=wsRow,column=wsCol+0).value
