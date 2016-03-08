@@ -89,50 +89,6 @@ class FAEMember:
     logging.error('SHOULD NOT BE HERE')
     return False
 
-#-----------------------------------------------------------------------
-class FAETeam:
-  dict = None
-  list = None
-
-  def Init():
-    FAETeam.dict = {}
-    FAETeam.list  = []
-
-    FAETeam.dict['Eric Liu'     ] = FAEMember('Eric'   ,'Liu'   ,'P','DMR','N','2014-01-01','2020-01-01')
-    FAETeam.dict['Young Wang'   ] = FAEMember('Young'  ,'Wang'  ,'P','DMR','N','2014-01-01','2020-01-01')
-    FAETeam.dict['Ronald Luan'  ] = FAEMember('Ronald' ,'Luan'  ,'P','DMR','N','2014-01-01','2020-01-01')
-    FAETeam.dict['Yukang Tu'    ] = FAEMember('Yukang' ,'Tu'    ,'P','DMR','N','2014-01-01','2020-01-01')
-    FAETeam.dict['Wayne Fu'     ] = FAEMember('Wayne'  ,'Fu'    ,'P','DMR','N','2014-01-01','2020-01-01')
-    FAETeam.dict['Mark Yan'     ] = FAEMember('Mark'   ,'Yan'   ,'P','DMR','N','2014-01-01','2020-01-01')
-    FAETeam.dict['Klein Jiang'  ] = FAEMember('Klein'  ,'Jiang' ,'P','DMR','S','2014-01-01','2020-01-01')
-    FAETeam.dict['Corey Liu'    ] = FAEMember('Corey'  ,'Liu'   ,'P','DMR','S','2014-01-01','2020-01-01')
-    FAETeam.dict['Huang Wei'    ] = FAEMember('Huang'  ,'Wei'   ,'P','DMR','S','2014-01-01','2020-01-01')
-    FAETeam.dict['Wang Sining'  ] = FAEMember('Wang'   ,'Sining','P','DMR','S','2014-01-01','2020-01-01')
-    FAETeam.dict['Iblic Lin'    ] = FAEMember('Iblic'  ,'Lin'   ,'P','DMR','S','2014-01-01','2020-01-01')
-    FAETeam.dict['Tiger Chen'   ] = FAEMember('Tiger'  ,'Chen'  ,'P','MI' ,'S','2014-01-01','2020-01-01')
-    FAETeam.dict['Huang Zheer'  ] = FAEMember('Huang'  ,'Zheer' ,'P','MI' ,'S','2014-01-01','2020-01-01')
-    FAETeam.dict['Gary Wang'    ] = FAEMember('Gary'   ,'Wang'  ,'P','MI' ,'S','2014-01-01','2020-01-01')
-    FAETeam.dict['David Wang'   ] = FAEMember('David'  ,'Wang'  ,'P','MI' ,'S','2014-01-01','2020-01-01')
-    FAETeam.dict['Chien Huang'  ] = FAEMember('Chien'  ,'Huang' ,'P','MI' ,'S','2014-01-01','2020-01-01')
-    FAETeam.dict['Hu Yu'        ] = FAEMember('Hu'     ,'Yu'    ,'P','MI' ,'N','2014-01-01','2020-01-01')
-    FAETeam.dict['Eric Wang'    ] = FAEMember('Eric'   ,'Wang'  ,'P','MI' ,'S','2014-01-01','2020-01-01')
-    FAETeam.dict['Kowski Heieh' ] = FAEMember('Kowski' ,'Heieh' ,'P','MI' ,'S','2014-01-01','2020-01-01')
-    FAETeam.dict['Jun Yang'     ] = FAEMember('Jun'    ,'Yang'  ,'P','TVM','N','2014-01-01','2020-01-01')
-    FAETeam.dict['Michael Zhang'] = FAEMember('Michael','Zhang' ,'P','TVM','S','2014-01-01','2020-01-01')
-    FAETeam.dict['Simon Liu'    ] = FAEMember('Simon'  ,'Liu'   ,'P','DAS','N','2014-01-01','2020-01-01')
-    FAETeam.dict['Ray Zhang'    ] = FAEMember('Ray'    ,'Zhang' ,'P','DAS','N','2014-01-01','2020-01-01')
-    FAETeam.dict['Zhao Jing'    ] = FAEMember('Zhao'   ,'Jing'  ,'P','DAS','N','2014-01-01','2016-02-01')
-
-    FAETeam.list = sorted(FAETeam.dict.values())
-
-#    for fae in FAETeam.list:
-#      logging.debug(str(fae.team).ljust(3) + ' ' + str(fae.loc) + ' ' + str(fae.lname).ljust(12))
-
-#  def Append(self, fae):
-#    self.members.append(fae)
-
-
-
 
 
 

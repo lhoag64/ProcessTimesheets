@@ -3,7 +3,7 @@ import os.path
 import datetime
 import logging
 from   Calendar import Calendar
-from   FAE      import FAETeam
+from   FAETeam  import FAETeam
 
 finished = []
 
@@ -38,7 +38,7 @@ class FLDate:
 
 #-----------------------------------------------------------------------
 class FLFile:
-  def __init__(self,filename):
+  def __init__(self,filename,team):
     self.fae      = None
     self.fname    = None
     self.lname    = None
@@ -48,17 +48,17 @@ class FLFile:
     self.wsDate   = None
     self.valid    = False
 
-    filenameinfo = os.path.basename(filename).split();
-    if (len(filenameinfo) != 7):
+    filenameinfo = os.path.basename(filename).split('_');
+    if (len(filenameinfo) != 5):
       return
 
-    year  = int(filenameinfo[6][0:4])
+    year  = int(filenameinfo[4][0:4])
     if (year < 2016 or year > 2020): 
       return
-    month = int(filenameinfo[6][5:7])
+    month = int(filenameinfo[4][5:7])
     if (month < 1 or month > 12): 
       return
-    day   = int(filenameinfo[6][8:10])
+    day   = int(filenameinfo[4][8:10])
     if (day < 1 or day > 31): 
       return
 
@@ -67,10 +67,10 @@ class FLFile:
       return
     wsDate = weDate - datetime.timedelta(days=6)
 
-    self.fname    = filenameinfo[2]
-    self.lname    = filenameinfo[3]
+    self.fname    = filenameinfo[1]
+    self.lname    = filenameinfo[2]
     self.fullname = self.fname + ' ' + self.lname
-    if (self.fullname not in FAETeam.dict):
+    if (self.fullname not in team.dict):
       logging.debug(self.fullname)
       return
 
@@ -128,7 +128,7 @@ class FLData:
   def __init__(self):
     self.weeks = {}
 
-  def AddFile(self,tsfile):
+  def AddFile(self,tsfile,team):
     date = tsfile.wsDate.asDate 
     if (date not in self.weeks): 
       self.weeks[date] = {}
@@ -138,16 +138,16 @@ class FLData:
     else:
       logging.error('Timesheet already exists for ' + str(date) + ' ' + name)
 
-  def Validate(self):
+  def Validate(self,team):
     for date in self.weeks:
       cnt = 0
-      for name in FAETeam.dict:
+      for name in team.dict:
         if (name not in self.weeks[date]):
           # Date is a Monday, so weDate should be a Friday
           wsDate = date
           weDate = date + datetime.timedelta(days=4)
-          sDate = FAETeam.dict[name].startDate.GetVal()
-          tDate = FAETeam.dict[name].endDate.GetVal()
+          sDate = team.dict[name].startDate.GetVal()
+          tDate = team.dict[name].endDate.GetVal()
           if (wsDate >= sDate and weDate <= tDate):
             logging.error('Missing Timesheet for week starting ' + str(date) + ' ' + name)
         else:

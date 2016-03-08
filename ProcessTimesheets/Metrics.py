@@ -1,5 +1,5 @@
 import logging
-from FAE       import FAETeam
+#from FAETeam   import FAETeam
 from FAE       import FAEMember
 from TimeSheet import Timesheet
 from TimeSheet import TSEntry
@@ -166,25 +166,9 @@ class Metrics:
       if (hours != None):
         if (name not in self.dict):
           self.dict[name] = Metrics.FAE.Fae()
-          # sDate = FAETeam.dict[name].startDate.asDate()
-          # eDate = FAETeam.dict[name].endDate.asDate()
-          # wsDate = entry.date
-          # TODO: check entry date to see if it is in the week braketed by sDate and eDate
-          # Don't do this here, calculate headcount someplace else
-          # self.headcount += 1
       metrics = self.dict[name]
       metrics.hours += hours
-      #logging.debug(fae.fullname.GetVal())
-      #logging.debug(fae.team.GetVal())
-      #logging.debug(fae.laborType.GetVal())
-      #logging.debug(fae.loc.GetVal())
-      #logging.debug(entry.code.GetVal())
-      #logging.debug(entry.location.GetVal())
-      #logging.debug(entry.activity.GetVal())
-      #logging.debug(entry.product.GetVal())
-      #logging.debug(entry.hours.GetVal())
-      #logging.debug(entry.workType.GetVal())
-      #logging.debug('Done')
+
 #-----------------------------------------------------------------------
   def __init__(self,date):
     self.codes = Metrics.Codes()
