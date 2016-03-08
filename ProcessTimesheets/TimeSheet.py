@@ -401,7 +401,7 @@ class Timesheet:
     else:
       dateFromFile = ''
 
-    nameFromFile = nameFromFile.ljust(15)
+    nameFromFile = nameFromFile.ljust(18)
     dateFromFile = dateFromFile.ljust(15)
 
     logging.debug(nameFromFile + '|' + dateFromFile + '|Reading ' + path)

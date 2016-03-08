@@ -97,10 +97,10 @@ class TSSummary:
   #---------------------------------------------------------------------
   def createWorkbook(self):
     self.swb = Workbook()
-    self.swb.create_sheet('AM Charts')
-    self.swb.create_sheet('AM Tables')
-    self.swb.create_sheet('AM Metrics')
-    self.swb.create_sheet('AM Data')
+    self.swb.create_sheet('EMEA Charts')
+    self.swb.create_sheet('EMEA Tables')
+    self.swb.create_sheet('EMEA Metrics')
+    self.swb.create_sheet('EMEA Data')
     self.swb.remove_sheet(self.swb.get_sheet_by_name('Sheet'))
 
   #---------------------------------------------------------------------
