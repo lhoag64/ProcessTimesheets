@@ -2,7 +2,6 @@
 import datetime
 import logging
 from   openpyxl import load_workbook
-from   FAE      import FAETeam
  
 #-----------------------------------------------------------------------
 class TSDate:
@@ -378,9 +377,9 @@ class Timesheet:
         break
       curcol += 1
     if (found == True):
-      #nameFromFile = str(ws.cell(row=currow,column=curcol+1).value).strip()
       nameFromFile = str(ws.cell(row=currow,column=curcol+2).value).strip()
-      #nameFromFile = str(ws.cell(row=currow,column=curcol+3).value).strip()
+      if (nameFromFile[0:4] == 'Week'):
+        nameFromFile = str(ws.cell(row=currow,column=curcol+1).value).strip()
     else:
       nameFromFile = ''
 

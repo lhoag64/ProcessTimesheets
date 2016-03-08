@@ -7,7 +7,7 @@ import openpyxl
 from   openpyxl.workbook import Workbook
 from   openpyxl.styles   import Font,Side,Border,Alignment,Color,Style
 from   openpyxl.styles.colors import RED
-from   FAE     import FAETeam
+from   FAETeam import FAETeam
 from   Metrics import Metrics
 
 
@@ -76,7 +76,7 @@ class TSSummary:
     self.metrics = {}         # summary metrics
      
   #---------------------------------------------------------------------
-  def Process(self,tsdata,year,week):
+  def Process(self,tsdata,year,week,region,team):
     self.year = year
     self.week = week
 
@@ -90,17 +90,17 @@ class TSSummary:
         ts.ReadFile()
         self.tsdict[wsDate].append(ts)
  
-    self.createWorkbook()
-    self.writeRawDataSheet()
+    self.createWorkbook(region)
+    self.writeRawDataSheet(region,team)
     self.saveWorkbook()
 
   #---------------------------------------------------------------------
-  def createWorkbook(self):
+  def createWorkbook(self,region):
     self.swb = Workbook()
-    self.swb.create_sheet('EMEA Charts')
-    self.swb.create_sheet('EMEA Tables')
-    self.swb.create_sheet('EMEA Metrics')
-    self.swb.create_sheet('EMEA Data')
+    self.swb.create_sheet(region + ' Charts')
+    self.swb.create_sheet(region + ' Tables')
+    self.swb.create_sheet(region + ' Metrics')
+    self.swb.create_sheet(region + ' Data')
     self.swb.remove_sheet(self.swb.get_sheet_by_name('Sheet'))
 
   #---------------------------------------------------------------------
@@ -140,8 +140,9 @@ class TSSummary:
     cell.border = border.copy()
 
   #---------------------------------------------------------------------
-  def writeRawDataSheet(self):
-    ws = self.swb.get_sheet_by_name('AM Data')
+  def writeRawDataSheet(self,region,team):
+    ws_name = region + ' Data'
+    ws = self.swb.get_sheet_by_name(ws_name)
 
     ws.column_dimensions['B'].width = 20
     ws.column_dimensions['C'].width =  3
@@ -247,7 +248,8 @@ class TSSummary:
     wsRow = 2
     wsCol = 2
 
-    ws = self.swb.get_sheet_by_name('AM Metrics')
+    ws_name = region + ' Metrics'
+    ws = self.swb.get_sheet_by_name(ws_name)
 
     ws.column_dimensions['B'].width = 30
     ws.column_dimensions['C'].width = 10
@@ -257,7 +259,7 @@ class TSSummary:
       self.setCell(ws.cell(row=i+3,column=wsCol+0),'L','G',TSSummary.colName[i])
       i += 1
 
-    for fae in FAETeam.list:
+    for fae in team.list:
       name = fae.fullname.GetVal()
       self.setCell(ws.cell(row=i+3,column=wsCol+0),'L','G','    ' + name)
       i += 1
@@ -299,7 +301,7 @@ class TSSummary:
       self.setCell(ws.cell(row=44,column=wsCol+0+i),'R','F',metrics.total.trv)
       self.setCell(ws.cell(row=45,column=wsCol+0+i),'R','F',metrics.total.sby)
       rowoffs = 0
-      for fae in FAETeam.list:
+      for fae in team.list:
         name = fae.fullname.GetVal()
         if (name in metrics.fae.dict):
           hours = metrics.fae.dict[name].hours
@@ -308,53 +310,12 @@ class TSSummary:
         self.setCell(ws.cell(row=47+rowoffs,column=wsCol+0+i),'R','F',hours)
         if (hours == None):
           weDate = wsDate + datetime.timedelta(days=4) 
-          sDate = FAETeam.dict[name].startDate.GetVal()
-          tDate = FAETeam.dict[name].endDate.GetVal()
+          sDate = team.dict[name].startDate.GetVal()
+          tDate = team.dict[name].endDate.GetVal()
           if (wsDate >= sDate and weDate <= tDate):
             self.flagCell(ws.cell(row=27+rowoffs,column=wsCol+0+i))
 
         rowoffs += 1
-
-
-#      for fae in FAETeam.list:
-#        logging.debug(str(fae.team).ljust(3) + ' ' + str(fae.loc) + ' ' + str(fae.lname).ljust(12))
-#
-#      for fae in FAETeam.list:
-#        name = fae.fullname.GetVal()
-#        logging.debug(name + '  ' + str(metrics.fae.dict[name].hours))
-#      logging.debug('Done')
-#
-#    logging.debug('Done') 
-
-
-  #---------------------------------------------------------------------
-  # Print the raw date, a good example to run through the data
-  #---------------------------------------------------------------------
-#  def Print(self):
-#    for i in range(1,self.week+1): 
-#      wsDate = Calendar.week[i]
-#      tslist = self.tsdict[wsDate]
-#      for j in tslist:
-#        faeName = j.ssdata.fae.fullname.ljust(21)
-#        faeType = j.ssdata.fae.laborType
-#        faeTeam = j.ssdata.fae.team.ljust(3)
-#        faeLoc  = j.ssdata.fae.loc
-#        ws      = str(j.ssdata.wsDate)
-#        we      = str(j.ssdata.weDate)
-#        for k in j.entries:
-#          wDate  = str(k.date)
-#          wCode  = str(k.code).ljust(5)
-#          wLoc   = str(k.location).ljust(3)
-#          wAct   = str(k.activity).ljust(2)
-#          wProd  = str(k.product).ljust(2)
-#          wHours = str(k.hours).ljust(5)
-#          wLtd   = str(k.workType).ljust(10)
-#          logging.debug \
-#            (faeName + '|' + faeType + '|' + faeTeam + '|' + faeLoc + '|' + \
-#             ws      + '|' + we      + '|' + wDate   + '|' + \
-#             wCode   + '|' + wLoc    + '|' + wAct    + '|' + wProd + '|' + \
-#             wHours  + '|' + wLtd)
-#    logging.debug('Done') 
 
   #-----------------------------------------------------------------------
   def Sort(self,tsdata,week):
@@ -368,12 +329,6 @@ class TSSummary:
         list.append(value)
       self.sslist.append(sorted(list))
  
-    #for i,week in enumerate(self.sslist):
-    #  logging.debug(Calendar.week[i+1])
-    #  for j,item in enumerate(week):
-    #    logging.debug(item.fae.team + ' ' + item.fae.loc + ' ' + item.fae.fullname)
-        
-    #logging.debug('sorted list')
 
 
 
